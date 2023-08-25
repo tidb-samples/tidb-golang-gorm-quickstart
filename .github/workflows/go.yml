@@ -1,0 +1,36 @@
+# This workflow will build a golang project
+# For more information see: https://docs.github.com/en/actions/automating-builds-and-tests/building-and-testing-go
+
+name: Go
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+env:
+  TIDB_HOST: '127.0.0.1'
+  TIDB_PORT: '4000'
+  TIDB_USER: 'root'
+  TIDB_PASSWORD: ''
+  TIDB_DB_NAME: 'test'
+  USE_SSL: 'false'
+
+jobs:
+
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v3
+
+    - name: Set up Go
+      uses: actions/setup-go@v4
+      with:
+        go-version: '1.20'
+
+    - name: Setup TiDB
+      uses: Icemap/tidb-action@main
+
+    - name: Build and run
+      run: make
