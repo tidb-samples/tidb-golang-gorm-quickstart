@@ -1,0 +1,76 @@
+2023/08/25 14:50:34 /Users/cheese/GolandProjects/tidb-golang-gorm-quickstart/gorm.go:48
+[1.087ms] [rows:-] SELECT DATABASE()
+
+2023/08/25 14:50:34 /Users/cheese/GolandProjects/tidb-golang-gorm-quickstart/gorm.go:48
+[9.353ms] [rows:1] SELECT SCHEMA_NAME from Information_schema.SCHEMATA where SCHEMA_NAME LIKE 'test%' ORDER BY SCHEMA_NAME='test' DESC,SCHEMA_NAME limit 1
+
+2023/08/25 14:50:34 /Users/cheese/GolandProjects/tidb-golang-gorm-quickstart/gorm.go:48
+[104.269ms] [rows:-] SELECT count(*) FROM information_schema.tables WHERE table_schema = 'test' AND table_name = 'player' AND table_type = 'BASE TABLE'
+
+2023/08/25 14:50:34 /Users/cheese/GolandProjects/tidb-golang-gorm-quickstart/gorm.go:48
+[1.265ms] [rows:-] SELECT DATABASE()
+
+2023/08/25 14:50:34 /Users/cheese/GolandProjects/tidb-golang-gorm-quickstart/gorm.go:48
+[3.317ms] [rows:1] SELECT SCHEMA_NAME from Information_schema.SCHEMATA where SCHEMA_NAME LIKE 'test%' ORDER BY SCHEMA_NAME='test' DESC,SCHEMA_NAME limit 1
+
+2023/08/25 14:50:34 /Users/cheese/GolandProjects/tidb-golang-gorm-quickstart/gorm.go:48
+[11.243ms] [rows:-] SELECT * FROM `player` LIMIT 1
+
+2023/08/25 14:50:34 /Users/cheese/GolandProjects/tidb-golang-gorm-quickstart/gorm.go:48
+[62.958ms] [rows:-] SELECT column_name, column_default, is_nullable = 'YES', data_type, character_maximum_length, column_type, column_key, extra, column_comment, numeric_precision, numeric_scale , datetime_precision FROM information_schema.columns WHERE table_schema = 'test' AND table_name = 'player' ORDER BY ORDINAL_POSITION
+
+2023/08/25 14:50:34 /Users/cheese/GolandProjects/tidb-golang-gorm-quickstart/gorm.go:84
+[11.899ms] [rows:0] INSERT INTO `player` (`id`,`coins`,`goods`) VALUES ('test',1,1) ON DUPLICATE KEY UPDATE `coins`=VALUES(`coins`),`goods`=VALUES(`goods`)
+
+2023/08/25 14:50:34 /Users/cheese/GolandProjects/tidb-golang-gorm-quickstart/gorm.go:90
+[1.618ms] [rows:1] SELECT * FROM `player` WHERE id = 'test'
+getPlayer: {ID:test Coins:1 Goods:1}
+
+2023/08/25 14:50:34 /Users/cheese/GolandProjects/tidb-golang-gorm-quickstart/gorm.go:111
+[17.808ms] [rows:1] SELECT count(*) FROM `player`
+countPlayers: 7679
+
+2023/08/25 14:50:34 /Users/cheese/GolandProjects/tidb-golang-gorm-quickstart/gorm.go:116
+[1.293ms] [rows:3] SELECT * FROM `player` LIMIT 3
+print 1 player: {ID:test Coins:1 Goods:1}
+print 2 player: {ID:dc58435b-68b2-4491-8f98-c3429b3c53af Coins:5970 Goods:5901}
+print 3 player: {ID:d7a6ba97-fbe8-4b01-836b-502edc637051 Coins:3754 Goods:1955}
+
+2023/08/25 14:50:34 /Users/cheese/GolandProjects/tidb-golang-gorm-quickstart/gorm.go:64
+[3.681ms] [rows:2] INSERT INTO `player` (`id`,`coins`,`goods`) VALUES ('1',100,0) ON DUPLICATE KEY UPDATE `coins`=VALUES(`coins`),`goods`=VALUES(`goods`)
+
+2023/08/25 14:50:34 /Users/cheese/GolandProjects/tidb-golang-gorm-quickstart/gorm.go:65
+[4.657ms] [rows:2] INSERT INTO `player` (`id`,`coins`,`goods`) VALUES ('2',114514,20) ON DUPLICATE KEY UPDATE `coins`=VALUES(`coins`),`goods`=VALUES(`goods`)
+
+buyGoods:
+    => this trade will fail
+
+2023/08/25 14:50:34 /Users/cheese/sdk/go1.18rc1/pkg/mod/github.com/pingcap-inc/tidb-example-golang@v0.0.0-20220602065418-eecbd67627cc/util/txn_gorm.go:29
+[0.785ms] [rows:0] set @@tidb_txn_mode=pessimistic
+
+2023/08/25 14:50:34 /Users/cheese/GolandProjects/tidb-golang-gorm-quickstart/gorm.go:137
+[2.838ms] [rows:1] SELECT * FROM `player` WHERE id = '2' FOR UPDATE
+
+2023/08/25 14:50:34 /Users/cheese/GolandProjects/tidb-golang-gorm-quickstart/gorm.go:146
+[2.143ms] [rows:1] SELECT * FROM `player` WHERE id = '1' FOR UPDATE
+
+buyGoods:
+    => this trade will success
+
+2023/08/25 14:50:34 /Users/cheese/sdk/go1.18rc1/pkg/mod/github.com/pingcap-inc/tidb-example-golang@v0.0.0-20220602065418-eecbd67627cc/util/txn_gorm.go:29
+[0.588ms] [rows:0] set @@tidb_txn_mode=pessimistic
+
+2023/08/25 14:50:34 /Users/cheese/GolandProjects/tidb-golang-gorm-quickstart/gorm.go:137
+[1.448ms] [rows:1] SELECT * FROM `player` WHERE id = '2' FOR UPDATE
+
+2023/08/25 14:50:34 /Users/cheese/GolandProjects/tidb-golang-gorm-quickstart/gorm.go:146
+[1.341ms] [rows:1] SELECT * FROM `player` WHERE id = '1' FOR UPDATE
+
+2023/08/25 14:50:34 /Users/cheese/GolandProjects/tidb-golang-gorm-quickstart/gorm.go:155
+[5.877ms] [rows:1] UPDATE player set goods = goods + -2, coins = coins + 100 WHERE id = '2'
+
+2023/08/25 14:50:34 /Users/cheese/GolandProjects/tidb-golang-gorm-quickstart/gorm.go:159
+[1.535ms] [rows:1] UPDATE player set goods = goods + 2, coins = coins + -100 WHERE id = '1'
+
+[buyGoods]:
+    'trade success'
